@@ -1,0 +1,45 @@
+using Canvas.Api.Services;
+using Canvas.Api.Data.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Canvas.Api.Services.User.Exceptions;
+using Canvas.Api.Services.Auth.Commands;
+
+namespace Canvas.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
+    {
+        _authService = authService;
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
+    {
+        var command = new RegisterUserCommand
+        (
+            registerRequestDto.FirstName,
+            registerRequestDto.LastName,
+            registerRequestDto.Email,
+            registerRequestDto.Password
+        );
+
+        var user = await _authService.RegisterAsync(command);
+
+        var responseDto = new RegisterResponseDto
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        };
+
+        return CreatedAtAction(nameof(Register), responseDto);
+    }
+}
