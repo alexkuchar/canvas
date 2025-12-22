@@ -39,9 +39,12 @@ public class User
 
     public void ChangeEmail(string email)
     {
-        if (Email == email.Trim().ToLowerInvariant()) throw new InvalidOperationException("Email is already in use");
+        if (Email == email) throw new InvalidOperationException("Email is already in use");
 
-        Email = email.Trim().ToLowerInvariant() ?? throw new ArgumentNullException(nameof(email));
+        Email = (email ?? throw new ArgumentNullException(nameof(email)))
+            .Trim()
+            .ToLowerInvariant();
+
         Touch();
     }
 
