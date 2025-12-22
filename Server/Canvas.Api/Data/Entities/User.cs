@@ -28,7 +28,11 @@ public class User
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
-        Email = email.Trim().ToLowerInvariant() ?? throw new ArgumentNullException(nameof(email));
+
+        Email = (email ?? throw new ArgumentNullException(nameof(email)))
+            .Trim()
+            .ToLowerInvariant();
+
         PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
 
         Id = Guid.NewGuid();
