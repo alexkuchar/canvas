@@ -2,11 +2,12 @@ using Canvas.Api.Data;
 using Canvas.Api.Extensions;
 using Canvas.Api.Extensions.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerDocs();
+builder.Services.AddOpenApi();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -18,7 +19,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwaggerDocs();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
