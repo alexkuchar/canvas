@@ -52,27 +52,6 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Data.Entities.User> CreateAsync(RegisterUserDto registerUserDto)
-    {
-        var existingUser = await _userRepository.GetUserByEmailAsync(registerUserDto.Email);
-        if (existingUser != null) throw new EmailAlreadyInUseException(registerUserDto.Email);
-
-        var passwordHash = _passwordHasher.Hash(registerUserDto.Password);
-
-        var user = new Data.Entities.User
-        (
-            registerUserDto.FirstName,
-            registerUserDto.LastName,
-            registerUserDto.Email,
-            passwordHash
-        );
-
-        await _userRepository.AddUserAsync(user);
-        await _context.SaveChangesAsync();
-
-        return user;
-    }
-
     public async Task DeactivateAsync(Guid id)
     {
         var user = await _userRepository.GetUserByIdAsync(id) ?? throw new UserNotFoundException(id);
