@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Canvas.Api.Services.User.Exceptions;
+using System.Data;
+using Canvas.Api.Data.Exceptions;
 
 namespace Canvas.Api.Data.Entities;
 
@@ -34,7 +35,7 @@ public class User
 
         AssertIsValidEmail(email);
 
-        PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
+        PasswordHash = passwordHash ?? throw new InvalidPasswordHashException();
 
         Id = Guid.NewGuid();
         IsActive = true;
@@ -44,7 +45,7 @@ public class User
 
     public void ChangeEmail(string email)
     {
-        if (Email == email) throw new EmailAlreadyInUseException(email);
+        if (Email == email) throw new EmailUnchangedException();
 
         AssertIsValidEmail(email);
 
@@ -53,14 +54,14 @@ public class User
 
     public void ChangePassword(string passwordHash)
     {
-        PasswordHash = passwordHash ?? throw new ArgumentException("Password hash is required");
+        PasswordHash = passwordHash ?? throw new InvalidPasswordHashException();
         Touch();
     }
 
     public void ChangeName(string firstName, string lastName)
     {
-        FirstName = firstName ?? throw new ArgumentException("First name is required");
-        LastName = lastName ?? throw new ArgumentException("Last name is required");
+        FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+        LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
         Touch();
     }
 

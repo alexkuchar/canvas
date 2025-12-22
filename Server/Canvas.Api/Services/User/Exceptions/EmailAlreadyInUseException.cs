@@ -1,8 +1,10 @@
+using Canvas.Api.Errors;
+
 namespace Canvas.Api.Services.User.Exceptions;
 
-public class EmailAlreadyInUseException : Exception
+public class EmailAlreadyInUseException : AppException
 {
-    public EmailAlreadyInUseException(string email) : base($"Email '{email}' is already in use")
+    public EmailAlreadyInUseException(string email) : base(ErrorCodes.EmailAlreadyInUse, $"Email '{email}' is already in use")
     {
     }
 }
