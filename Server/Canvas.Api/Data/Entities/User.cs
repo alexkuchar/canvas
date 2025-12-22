@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Canvas.Api.Services.User.Exceptions;
+
 namespace Canvas.Api.Data.Entities;
 
 public class User
@@ -29,9 +32,7 @@ public class User
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
 
-        Email = (email ?? throw new ArgumentNullException(nameof(email)))
-            .Trim()
-            .ToLowerInvariant();
+        AssertIsValidEmail(email);
 
         PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
 
@@ -43,26 +44,33 @@ public class User
 
     public void ChangeEmail(string email)
     {
-        if (Email == email) throw new InvalidOperationException("Email is already in use");
+        if (Email == email) throw new EmailAlreadyInUseException(email);
 
-        Email = (email ?? throw new ArgumentNullException(nameof(email)))
-            .Trim()
-            .ToLowerInvariant();
+        AssertIsValidEmail(email);
 
         Touch();
     }
 
     public void ChangePassword(string passwordHash)
     {
-        PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
+        PasswordHash = passwordHash ?? throw new ArgumentException("Password hash is required");
         Touch();
     }
 
     public void ChangeName(string firstName, string lastName)
     {
-        FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
-        LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+        FirstName = firstName ?? throw new ArgumentException("First name is required");
+        LastName = lastName ?? throw new ArgumentException("Last name is required");
         Touch();
+    }
+
+    public void AssertIsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email)) throw new InvalidEmailException(email);
+
+        if (!new EmailAddressAttribute().IsValid(email)) throw new InvalidEmailException(email);
+
+        Email = email.Trim().ToLowerInvariant();
     }
 
     public void Touch()
