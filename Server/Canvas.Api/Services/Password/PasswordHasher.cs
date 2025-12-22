@@ -8,7 +8,8 @@ public class PasswordHasher : IPasswordHasher
 {
     private const int _saltSize = 16;
     private const int _hashSize = 32;
-    private static readonly int _degreeOfParallelism = Environment.ProcessorCount;
+    private static readonly int _degreeOfParallelism =
+        Math.Min(Environment.ProcessorCount, 4);
     private const int _iterations = 4;
     private const int _memorySize = 128 * 1024;
 
