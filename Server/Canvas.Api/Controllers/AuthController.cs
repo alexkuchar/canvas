@@ -69,4 +69,22 @@ public class AuthController : ControllerBase
 
         return Ok(responseDto);
     }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto refreshRequest)
+    {
+        var command = new RefreshSessionCommand(
+            refreshRequest.RefreshToken
+        );
+
+        var result = await _authService.RefreshSessionAsync(command);
+
+        var responseDto = new RefreshResponseDto(
+            AccessToken: result.AccessToken,
+            RefreshToken: result.RefreshToken,
+            RefreshTokenExpiresAt: result.RefreshTokenExpiresAt
+        );
+
+        return Ok(responseDto);
+    }
 }

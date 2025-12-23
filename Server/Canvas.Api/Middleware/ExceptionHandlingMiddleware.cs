@@ -51,6 +51,26 @@ public class ExceptionHandlingMiddleware
                 ErrorCodes.InvalidPassword,
                 e.Message
             ),
+            SessionNotFoundException e => (
+                HttpStatusCode.NotFound,
+                ErrorCodes.SessionNotFound,
+                e.Message
+            ),
+            SessionExpiredException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.SessionExpired,
+                e.Message
+            ),
+            SessionRevokedException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.SessionRevoked,
+                e.Message
+            ),
+            SessionAlreadyRevokedException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.SessionAlreadyRevoked,
+                e.Message
+            ),
 
             // Data.Exceptions
             InvalidEmailException e => (
