@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Canvas.Api.Data.Entities;
 
 public class Session
@@ -40,5 +42,10 @@ public class Session
     public bool isExpired()
     {
         return DateTime.UtcNow >= ExpiresAt;
+    }
+
+    public bool isRevoked()
+    {
+        return IsRevoked;
     }
 }
