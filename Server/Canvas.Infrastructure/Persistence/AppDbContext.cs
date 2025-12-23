@@ -1,7 +1,7 @@
 using Canvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Canvas.Api.Data;
+namespace Canvas.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {

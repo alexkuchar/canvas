@@ -1,8 +1,9 @@
 using Canvas.Application.Repositories;
 using Canvas.Domain.Entities;
+using Canvas.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Canvas.Api.Data.Repositories;
+namespace Canvas.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {

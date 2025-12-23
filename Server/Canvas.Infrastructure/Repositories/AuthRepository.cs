@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
+using Canvas.Infrastructure.Persistence;
 using Canvas.Application.Repositories;
 using Canvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Canvas.Api.Data.Repositories;
+namespace Canvas.Infrastructure.Repositories;
 
 public class AuthRepository : IAuthRepository
 {

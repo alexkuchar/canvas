@@ -2,8 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Canvas.Application.Security;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-namespace Canvas.Api.Services;
+
+namespace Canvas.Infrastructure.Security;
 
 public class TokenService : ITokenService
 {
@@ -24,7 +26,7 @@ public class TokenService : ITokenService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"] ?? throw new InvalidOperationException("JWT key is not configured")));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key is not configured")));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var accessToken = new JwtSecurityToken(
@@ -45,7 +47,7 @@ public class TokenService : ITokenService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"] ?? throw new InvalidOperationException("JWT key is not configured")));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT key is not configured")));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var refreshToken = new JwtSecurityToken(

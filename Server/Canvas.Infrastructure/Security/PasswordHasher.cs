@@ -3,7 +3,7 @@ using System.Text;
 using Canvas.Application.Security;
 using Konscious.Security.Cryptography;
 
-namespace Canvas.Api.Services;
+namespace Canvas.Infrastructure.Security;
 
 public class PasswordHasher : IPasswordHasher
 {
