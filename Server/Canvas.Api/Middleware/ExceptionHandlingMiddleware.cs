@@ -3,6 +3,7 @@ using System.Text.Json;
 using Canvas.Api.Data.Exceptions;
 using Canvas.Api.Errors;
 using Canvas.Api.Services.User.Exceptions;
+using Canvas.Api.Services.Auth.Exceptions;
 
 namespace Canvas.Api.Middleware;
 
@@ -43,6 +44,11 @@ public class ExceptionHandlingMiddleware
             EmailAlreadyInUseException e => (
                 HttpStatusCode.Conflict,
                 ErrorCodes.EmailAlreadyInUse,
+                e.Message
+            ),
+            InvalidPasswordException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.InvalidPassword,
                 e.Message
             ),
 

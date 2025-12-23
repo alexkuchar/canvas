@@ -1,11 +1,12 @@
 using Canvas.Api.Data;
-using Canvas.Api.Extensions;
 using Canvas.Api.Extensions.Authentication;
 using Canvas.Api.Services;
 using Canvas.Api.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Canvas.Api.Middleware;
+using Canvas.Api.Services.Auth.Options;
+using AuthJwtOptions = Canvas.Api.Services.Auth.Options.JwtOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.Configure<AuthJwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

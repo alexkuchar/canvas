@@ -1,20 +1,25 @@
-using Canvas.Api.Data;
 using Canvas.Api.Data.Repositories;
 using Canvas.Api.Services.Auth.Commands;
+using Canvas.Api.Services.Auth.Exceptions;
+using Canvas.Api.Services.Auth.Options;
+using Canvas.Api.Services.Auth.Results;
 using Canvas.Api.Services.User.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace Canvas.Api.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly AppDbContext _context;
+    private readonly JwtOptions _jwtOptions;
+    private readonly IAuthRepository _authRepository;
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
 
-    public AuthService(AppDbContext context, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService)
+    public AuthService(IOptions<JwtOptions> jwtOptions, IAuthRepository authRepository, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService)
     {
-        _context = context;
+        _jwtOptions = jwtOptions.Value;
+        _authRepository = authRepository;
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
@@ -35,9 +40,36 @@ public class AuthService : IAuthService
         );
 
         await _userRepository.AddUserAsync(user);
-        await _context.SaveChangesAsync();
 
         return user;
+    }
+
+    public async Task<AuthResult> LoginAsync(LoginUserCommand loginCommand)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(loginCommand.Email) ?? throw new UserNotFoundException(loginCommand.Email);
+
+        if (!_passwordHasher.Verify(loginCommand.Password, user.PasswordHash)) throw new InvalidPasswordException();
+
+        var accessToken = _tokenService.CreateAccessToken(user.Id.ToString(), user.Email);
+
+        var refreshToken = _tokenService.CreateRefreshToken(user.Id.ToString());
+        var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpiration);
+
+        await _authRepository.AddSessionAsync(new Data.Entities.Session(
+            userId: user.Id,
+            token: refreshToken,
+            expiresAt: refreshTokenExpiresAt
+        ));
+
+        return new AuthResult(
+            UserId: user.Id,
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            Email: user.Email,
+            AccessToken: accessToken,
+            RefreshToken: refreshToken,
+            RefreshTokenExpiresAt: refreshTokenExpiresAt
+        );
     }
 
 }

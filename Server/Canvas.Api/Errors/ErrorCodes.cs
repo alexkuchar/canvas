@@ -8,6 +8,7 @@ public static class ErrorCodes
     public const string EmailUnchanged = "EMAIL_UNCHANGED";
     public const string InvalidEmail = "INVALID_EMAIL";
     public const string InvalidPasswordHash = "INVALID_PASSWORD_HASH";
+    public const string InvalidPassword = "INVALID_PASSWORD";
 
     // General
     public const string UnexpectedError = "UNEXPECTED_ERROR";

@@ -42,4 +42,31 @@ public class AuthController : ControllerBase
 
         return CreatedAtAction(nameof(Register), responseDto);
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
+    {
+        var command = new LoginUserCommand(
+            loginRequest.Email,
+            loginRequest.Password
+        );
+
+        var result = await _authService.LoginAsync(command);
+
+        var responseDto = new LoginResponseDto(
+            User: new UserDto(
+                Id: result.UserId,
+                FirstName: result.FirstName,
+                LastName: result.LastName,
+                Email: result.Email
+            ),
+            Tokens: new TokenPairDto(
+                AccessToken: result.AccessToken,
+                RefreshToken: result.RefreshToken,
+                RefreshTokenExpiresAt: result.RefreshTokenExpiresAt
+            )
+        );
+
+        return Ok(responseDto);
+    }
 }
