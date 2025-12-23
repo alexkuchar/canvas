@@ -1,9 +1,8 @@
-using Canvas.Api.Services;
 using Canvas.Api.Data.DTOs;
 using Canvas.Application.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Canvas.Application.Exceptions;
 using Canvas.Application.Services.Auth;
+using Canvas.Application.Services;
 
 namespace Canvas.Api.Controllers;
 

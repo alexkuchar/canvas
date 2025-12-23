@@ -2,4 +2,5 @@
   <Project Path="Canvas.Api/Canvas.Api.csproj" />
   <Project Path="Canvas.Application/Canvas.Application.csproj" />
   <Project Path="Canvas.Domain/Canvas.Domain.csproj" />
+  <Project Path="Canvas.Infrastructure/Canvas.Infrastructure.csproj" />
 </Solution>

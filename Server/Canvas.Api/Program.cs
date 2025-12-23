@@ -1,7 +1,5 @@
 using Canvas.Api.Data;
 using Canvas.Api.Extensions.Authentication;
-using Canvas.Api.Services;
-using Canvas.Api.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Canvas.Api.Middleware;
@@ -9,6 +7,9 @@ using Canvas.Application.Security;
 using Canvas.Application.Services.Auth;
 using Canvas.Application.Services.User;
 using Canvas.Application.Repositories;
+using Canvas.Infrastructure.Security;
+using Canvas.Infrastructure.Repositories;
+using Canvas.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
