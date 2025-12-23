@@ -15,7 +15,9 @@ public class AuthRepository : IAuthRepository
 
     public async Task<Session?> GetSessionByRefreshTokenAsync(string token)
     {
-        return await _context.Sessions.FirstOrDefaultAsync(s => s.Token == token && !s.IsRevoked && !s.isExpired());
+        return await _context.Sessions
+            .Include(s => s.User)
+            .FirstOrDefaultAsync(s => s.Token == token);
     }
 
     public async Task AddSessionAsync(Session session)
