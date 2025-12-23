@@ -72,4 +72,31 @@ public class AuthService : IAuthService
         );
     }
 
+    public async Task<SessionRefreshResult> RefreshSessionAsync(RefreshSessionCommand refreshSessionCommand)
+    {
+        var session = await _authRepository.GetSessionByRefreshTokenAsync(refreshSessionCommand.RefreshToken) ?? throw new SessionNotFoundException(refreshSessionCommand.RefreshToken);
+
+        if (session.isExpired()) throw new SessionExpiredException();
+        if (session.isRevoked()) throw new SessionRevokedException();
+
+        var accessToken = _tokenService.CreateAccessToken(session.UserId.ToString(), session.User.Email);
+
+        await _authRepository.RevokeSessionAsync(session);
+
+        var refreshToken = _tokenService.CreateRefreshToken(session.UserId.ToString());
+        var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpiration);
+
+        await _authRepository.AddSessionAsync(new Data.Entities.Session(
+            userId: session.UserId,
+            token: refreshToken,
+            expiresAt: refreshTokenExpiresAt
+        ));
+
+        return new SessionRefreshResult(
+            AccessToken: accessToken,
+            RefreshToken: refreshToken,
+            RefreshTokenExpiresAt: refreshTokenExpiresAt
+        );
+    }
+
 }

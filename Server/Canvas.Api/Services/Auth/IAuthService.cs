@@ -7,4 +7,6 @@ public interface IAuthService
 {
     Task<Data.Entities.User> RegisterAsync(RegisterUserCommand registerCommand);
     Task<AuthResult> LoginAsync(LoginUserCommand loginCommand);
+    Task<SessionRefreshResult> RefreshSessionAsync(RefreshSessionCommand refreshSessionCommand);
+
 }
