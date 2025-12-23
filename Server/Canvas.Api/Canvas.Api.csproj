@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Canvas.Domain\Canvas.Domain.csproj" />
+    <ProjectReference Include="..\Canvas.Application\Canvas.Application.csproj" />
   </ItemGroup>
 
 </Project>
