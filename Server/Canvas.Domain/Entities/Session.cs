@@ -1,6 +1,4 @@
-using System.Reflection.Metadata.Ecma335;
-
-namespace Canvas.Api.Data.Entities;
+namespace Canvas.Domain.Entities;
 
 public class Session
 {

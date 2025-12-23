@@ -1,4 +1,4 @@
-namespace Canvas.Api.Errors;
+namespace Canvas.Domain.Errors;
 
 public static class ErrorCodes
 {

@@ -5,7 +5,7 @@ namespace Canvas.Api.Services;
 
 public interface IAuthService
 {
-    Task<Data.Entities.User> RegisterAsync(RegisterUserCommand registerCommand);
+Task<Canvas.Domain.Entities.User> RegisterAsync(RegisterUserCommand registerCommand);
     Task<AuthResult> LoginAsync(LoginUserCommand loginCommand);
     Task<SessionRefreshResult> RefreshSessionAsync(RefreshSessionCommand refreshSessionCommand);
 

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Canvas.Api.Data.Entities;
+using Canvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Canvas.Api.Data.Repositories;

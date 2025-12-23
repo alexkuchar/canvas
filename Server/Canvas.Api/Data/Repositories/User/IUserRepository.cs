@@ -1,4 +1,4 @@
-using Canvas.Api.Data.Entities;
+using Canvas.Domain.Entities;
 
 namespace Canvas.Api.Data.Repositories;
 

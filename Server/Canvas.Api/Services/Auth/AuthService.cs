@@ -25,14 +25,14 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
 
-    public async Task<Data.Entities.User> RegisterAsync(RegisterUserCommand registerCommand)
+public async Task<Canvas.Domain.Entities.User> RegisterAsync(RegisterUserCommand registerCommand)
     {
         var existingUser = await _userRepository.GetUserByEmailAsync(registerCommand.Email);
         if (existingUser != null) throw new EmailAlreadyInUseException(registerCommand.Email);
 
         var passwordHash = _passwordHasher.Hash(registerCommand.Password);
 
-        var user = new Data.Entities.User(
+var user = new Canvas.Domain.Entities.User(
             registerCommand.FirstName,
             registerCommand.LastName,
             registerCommand.Email,
@@ -55,7 +55,7 @@ public class AuthService : IAuthService
         var refreshToken = _tokenService.CreateRefreshToken(user.Id.ToString());
         var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpiration);
 
-        await _authRepository.AddSessionAsync(new Data.Entities.Session(
+await _authRepository.AddSessionAsync(new Canvas.Domain.Entities.Session(
             userId: user.Id,
             token: refreshToken,
             expiresAt: refreshTokenExpiresAt
@@ -86,7 +86,7 @@ public class AuthService : IAuthService
         var refreshToken = _tokenService.CreateRefreshToken(session.UserId.ToString());
         var refreshTokenExpiresAt = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpiration);
 
-        await _authRepository.AddSessionAsync(new Data.Entities.Session(
+await _authRepository.AddSessionAsync(new Canvas.Domain.Entities.Session(
             userId: session.UserId,
             token: refreshToken,
             expiresAt: refreshTokenExpiresAt

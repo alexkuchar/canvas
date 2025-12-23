@@ -1,4 +1,4 @@
-using Canvas.Api.Errors;
+using Canvas.Domain.Errors;
 
 namespace Canvas.Api.Services.Auth.Exceptions;
 

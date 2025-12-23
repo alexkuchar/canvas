@@ -1,6 +1,6 @@
-using Canvas.Api.Errors;
+using Canvas.Domain.Errors;
 
-namespace Canvas.Api.Data.Exceptions;
+namespace Canvas.Domain.Exceptions;
 
 public class InvalidPasswordHashException : AppException
 {

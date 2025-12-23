@@ -1,8 +1,7 @@
+using Canvas.Domain.Exceptions;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using Canvas.Api.Data.Exceptions;
 
-namespace Canvas.Api.Data.Entities;
+namespace Canvas.Domain.Entities;
 
 public class User
 {

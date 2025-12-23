@@ -1,7 +1,7 @@
 using Canvas.Api.Data;
 using Canvas.Api.Data.DTOs;
 using Canvas.Api.Data.Repositories;
-using Canvas.Api.Data.Entities;
+using Canvas.Domain.Entities;
 using Canvas.Api.Services.User.Exceptions;
 
 namespace Canvas.Api.Services;

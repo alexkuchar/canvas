@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
-using Canvas.Api.Data.Exceptions;
-using Canvas.Api.Errors;
+using Canvas.Domain.Exceptions;
+using Canvas.Domain.Errors;
 using Canvas.Api.Services.User.Exceptions;
 using Canvas.Api.Services.Auth.Exceptions;
 
@@ -72,7 +72,7 @@ public class ExceptionHandlingMiddleware
                 e.Message
             ),
 
-            // Data.Exceptions
+            // Domain.Exceptions
             InvalidEmailException e => (
                 HttpStatusCode.BadRequest,
                 ErrorCodes.InvalidEmail,
