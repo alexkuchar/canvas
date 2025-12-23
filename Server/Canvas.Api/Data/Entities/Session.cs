@@ -13,4 +13,32 @@ public class Session
     public DateTime ExpiresAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    private Session()
+    {
+
+    }
+
+    public Session(
+        Guid userId,
+        string token,
+        DateTime expiresAt
+    )
+    {
+        UserId = userId;
+        Token = token ?? throw new ArgumentNullException(nameof(token));
+        IsRevoked = false;
+        ExpiresAt = expiresAt;
+        CreatedAt = DateTime.UtcNow;
+    }
+
+    public void revoke()
+    {
+        IsRevoked = true;
+    }
+
+    public bool isExpired()
+    {
+        return DateTime.UtcNow >= ExpiresAt;
+    }
 }

@@ -15,23 +15,25 @@ public class AuthRepository : IAuthRepository
 
     public async Task<Session?> GetSessionByRefreshTokenAsync(string token)
     {
-        return await _context.Sessions.FirstOrDefaultAsync(s => s.Token == token);
+        return await _context.Sessions.FirstOrDefaultAsync(s => s.Token == token && !s.IsRevoked && !s.isExpired());
     }
 
-    public async Task AddSession(Session session)
+    public async Task AddSessionAsync(Session session)
     {
         await _context.Sessions.AddAsync(session);
+        await _context.SaveChangesAsync();
     }
 
-    public async Task RevokeAllSessions(Guid userId)
+    public async Task RevokeAllSessionsAsync(Guid userId)
     {
         await _context.Sessions.Where(s => s.UserId == userId)
         .ExecuteUpdateAsync(s => s.SetProperty(s => s.IsRevoked, true));
+        await _context.SaveChangesAsync();
     }
 
-    public Task RevokeSession(Session session)
+    public async Task RevokeSessionAsync(Session session)
     {
         session.IsRevoked = true;
-        return Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 }

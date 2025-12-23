@@ -6,7 +6,7 @@ public interface IAuthRepository
 {
     Task<Session?> GetSessionByRefreshTokenAsync(string token);
 
-    Task AddSession(Session session);
-    Task RevokeSession(Session session);
-    Task RevokeAllSessions(Guid userId);
+    Task AddSessionAsync(Session session);
+    Task RevokeSessionAsync(Session session);
+    Task RevokeAllSessionsAsync(Guid userId);
 }

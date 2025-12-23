@@ -26,17 +26,19 @@ public class UserRepository : IUserRepository
     public async Task AddUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteUserAsync(Guid id)
     {
         await _context.Users.Where(u => u.Id == id).ExecuteDeleteAsync();
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateUserAsync(User user)
+    public async Task UpdateUserAsync(User user)
     {
         _context.Users.Update(user);
 
-        return Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 }
