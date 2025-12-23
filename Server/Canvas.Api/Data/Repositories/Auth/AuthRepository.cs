@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Canvas.Application.Repositories;
 using Canvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
