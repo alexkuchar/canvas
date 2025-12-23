@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-namespace Canvas.Api.Extensions.Authentication;
+
+namespace Canvas.Infrastructure.Extensions.Authentication;
 
 public static class AuthenticationExtensions
 {
@@ -41,3 +45,4 @@ public static class AuthenticationExtensions
         return app;
     }
 }
+

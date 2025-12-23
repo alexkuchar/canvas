@@ -1,4 +1,4 @@
-namespace Canvas.Api.Extensions.Authentication;
+namespace Canvas.Infrastructure.Extensions.Authentication;
 
 public class JwtOptions
 {
@@ -6,3 +6,4 @@ public class JwtOptions
     public string Audience { get; set; } = null!;
     public string Key { get; set; } = null!;
 }
+

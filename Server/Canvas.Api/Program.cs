@@ -1,50 +1,20 @@
-using Canvas.Api.Data;
-using Canvas.Api.Extensions.Authentication;
-using Microsoft.EntityFrameworkCore;
-using Scalar.AspNetCore;
+using Canvas.Api.Extensions;
 using Canvas.Api.Middleware;
-using Canvas.Application.Security;
-using Canvas.Application.Services.Auth;
-using Canvas.Application.Services.User;
-using Canvas.Application.Repositories;
-using Canvas.Infrastructure.Security;
-using Canvas.Infrastructure.Repositories;
-using Canvas.Infrastructure.Persistence;
+using Canvas.Application.Extensions;
+using Canvas.Infrastructure.Extensions;
+using Canvas.Infrastructure.Extensions.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddApi();
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
-
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
-
-app.UseHttpsRedirection();
+app.UseApi();
 app.UseAuthenticationAndAuthorization();
-app.MapControllers();
 
 app.Run();
