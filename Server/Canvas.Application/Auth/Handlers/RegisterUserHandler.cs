@@ -4,6 +4,7 @@ using Canvas.Application.Auth.Exceptions;
 using Canvas.Application.Repositories;
 using Canvas.Application.Security;
 using Canvas.Domain.Entities;
+using Canvas.Domain.Enums;
 
 namespace Canvas.Application.Auth.Handlers;
 
@@ -40,10 +41,12 @@ public class RegisterUserHandler
         await _userRepository.AddUserAsync(user);
 
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+
         var verificationToken = new VerificationToken(
             userId: user.Id,
             token: token,
-            expiresAt: DateTime.UtcNow.AddMinutes(15)
+            expiresAt: DateTime.UtcNow.AddMinutes(15),
+            verificationTokenType: VerificationTokenType.EmailVerification
         );
 
         await _verificationTokenRepository.AddVerificationTokenAsync(verificationToken);
