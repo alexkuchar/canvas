@@ -29,4 +29,5 @@ public static class ErrorCodes
     public const string VerificationTokenNotFound = "VERIFICATION_TOKEN_NOT_FOUND";
     public const string VerificationTokenExpired = "VERIFICATION_TOKEN_EXPIRED";
     public const string VerificationTokenUsed = "VERIFICATION_TOKEN_USED";
+    public const string VerificationTokenTypeMismatch = "VERIFICATION_TOKEN_TYPE_MISMATCH";
 }
