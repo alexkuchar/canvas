@@ -1,8 +1,7 @@
-using Canvas.Api.Data.DTOs;
-using Canvas.Application.Commands;
+using Canvas.Api.DTOs;
+using Canvas.Application.Auth.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Canvas.Application.Services.Auth;
-using Canvas.Application.Services;
+using Canvas.Application.Auth.Handlers;
 
 namespace Canvas.Api.Controllers;
 
@@ -10,11 +9,15 @@ namespace Canvas.Api.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly RegisterUserHandler _registerUserHandler;
+    private readonly LoginUserHandler _loginUserHandler;
+    private readonly RefreshSessionHandler _refreshSessionHandler;
 
-    public AuthController(IAuthService authService)
+    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler)
     {
-        _authService = authService;
+        _registerUserHandler = registerUserHandler;
+        _loginUserHandler = loginUserHandler;
+        _refreshSessionHandler = refreshSessionHandler;
     }
 
     [HttpPost("register")]
@@ -28,7 +31,7 @@ public class AuthController : ControllerBase
             registerRequestDto.Password
         );
 
-        var user = await _authService.RegisterAsync(command);
+        var user = await _registerUserHandler.HandleAsync(command);
 
         var responseDto = new RegisterResponseDto
         {
@@ -51,7 +54,7 @@ public class AuthController : ControllerBase
             loginRequest.Password
         );
 
-        var result = await _authService.LoginAsync(command);
+        var result = await _loginUserHandler.HandleAsync(command);
 
         var responseDto = new LoginResponseDto(
             User: new UserDto(
@@ -77,7 +80,7 @@ public class AuthController : ControllerBase
             refreshRequest.RefreshToken
         );
 
-        var result = await _authService.RefreshSessionAsync(command);
+        var result = await _refreshSessionHandler.HandleAsync(command);
 
         var responseDto = new RefreshResponseDto(
             AccessToken: result.AccessToken,

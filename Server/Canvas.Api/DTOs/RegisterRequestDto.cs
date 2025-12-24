@@ -1,4 +1,4 @@
-namespace Canvas.Api.Data.DTOs;
+namespace Canvas.Api.DTOs;
 
 public record RegisterRequestDto(
     string FirstName,

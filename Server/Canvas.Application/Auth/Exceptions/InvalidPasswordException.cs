@@ -1,6 +1,6 @@
 using Canvas.Domain.Errors;
 
-namespace Canvas.Application.Exceptions;
+namespace Canvas.Application.Auth.Exceptions;
 
 public class InvalidPasswordException : AppException
 {

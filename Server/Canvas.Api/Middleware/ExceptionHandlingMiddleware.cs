@@ -2,7 +2,9 @@ using System.Net;
 using System.Text.Json;
 using Canvas.Domain.Exceptions;
 using Canvas.Domain.Errors;
+
 using Canvas.Application.Exceptions;
+using Canvas.Application.Auth.Exceptions;
 
 namespace Canvas.Api.Middleware;
 

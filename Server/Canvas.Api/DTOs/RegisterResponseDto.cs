@@ -1,4 +1,4 @@
-namespace Canvas.Api.Data.DTOs;
+namespace Canvas.Api.DTOs;
 
 public class RegisterResponseDto
 {

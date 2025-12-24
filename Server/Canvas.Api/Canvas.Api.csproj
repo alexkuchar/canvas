@@ -30,11 +30,4 @@
     <ProjectReference Include="..\Canvas.Infrastructure\Canvas.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Repositories\Auth\" />
-    <Folder Include="Data\Repositories\User\" />
-    <Folder Include="Services\Password\" />
-    <Folder Include="Services\Token\" />
-  </ItemGroup>
-
 </Project>
