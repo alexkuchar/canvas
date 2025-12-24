@@ -13,13 +13,17 @@ public class AuthController : ControllerBase
     private readonly LoginUserHandler _loginUserHandler;
     private readonly RefreshSessionHandler _refreshSessionHandler;
     private readonly VerifyUserHandler _verifyUserHandler;
+    private readonly ForgotPasswordHandler _forgotPasswordHandler;
+    private readonly ResetPasswordHandler _resetPasswordHandler;
 
-    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler, VerifyUserHandler verifyUserHandler)
+    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler, VerifyUserHandler verifyUserHandler, ForgotPasswordHandler forgotPasswordHandler, ResetPasswordHandler resetPasswordHandler)
     {
         _registerUserHandler = registerUserHandler;
         _loginUserHandler = loginUserHandler;
         _refreshSessionHandler = refreshSessionHandler;
         _verifyUserHandler = verifyUserHandler;
+        _forgotPasswordHandler = forgotPasswordHandler;
+        _resetPasswordHandler = resetPasswordHandler;
     }
 
     [HttpPost("register")]
@@ -107,5 +111,30 @@ public class AuthController : ControllerBase
         );
 
         return Ok(responseDto);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto forgotPasswordRequest)
+    {
+        var command = new ForgotPasswordCommand(
+            forgotPasswordRequest.Email
+        );
+
+        await _forgotPasswordHandler.HandleAsync(command);
+
+        return Ok(new { Message = "Password reset email sent" });
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequest)
+    {
+        var command = new ResetPasswordCommand(
+            resetPasswordRequest.Token,
+            resetPasswordRequest.NewPassword
+        );
+
+        await _resetPasswordHandler.HandleAsync(command);
+
+        return Ok(new { Message = "Password reset successfully" });
     }
 }
