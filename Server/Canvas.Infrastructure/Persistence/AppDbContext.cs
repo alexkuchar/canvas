@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Session> Sessions => Set<Session>();
+    public DbSet<VerificationToken> VerificationTokens => Set<VerificationToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +22,31 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Session>()
             .HasIndex(s => s.Token)
             .IsUnique();
+
+        modelBuilder.Entity<Session>()
+            .HasIndex(s => s.UserId)
+            .IsUnique(false);
+
+        modelBuilder.Entity<Session>()
+            .HasOne(s => s.User)
+            .WithMany(u => u.Sessions)
+            .HasPrincipalKey(u => u.Id)
+            .HasForeignKey(s => s.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<VerificationToken>()
+            .HasIndex(t => t.Token)
+            .IsUnique();
+
+        modelBuilder.Entity<VerificationToken>()
+            .HasIndex(t => t.UserId)
+            .IsUnique(false);
+
+        modelBuilder.Entity<VerificationToken>()
+            .HasOne(t => t.User)
+            .WithMany(u => u.VerificationTokens)
+            .HasPrincipalKey(u => u.Id)
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
