@@ -18,6 +18,8 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
 
+        services.AddEmailConfiguration();
+
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthRepository, AuthRepository>();
         services.AddScoped<IVerificationTokenRepository, VerificationTokenRepository>();
