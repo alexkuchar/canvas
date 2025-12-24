@@ -13,12 +13,16 @@ public class User
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
 
+    public bool IsVerified { get; private set; }
+    public DateTime VerifiedAt { get; private set; }
+
     public bool IsActive { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
     public ICollection<Session> Sessions { get; private set; } = new List<Session>();
+    public ICollection<VerificationToken> VerificationTokens { get; private set; } = new List<VerificationToken>();
 
     private User() { }
 
@@ -40,6 +44,21 @@ public class User
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public bool IsUserVerified()
+    {
+        return IsVerified;
+    }
+
+    public void Verify()
+    {
+        if (IsUserVerified()) throw new UserAlreadyVerifiedException();
+
+        IsVerified = true;
+        VerifiedAt = DateTime.UtcNow;
+
+        Touch();
     }
 
     public void ChangeEmail(string email)

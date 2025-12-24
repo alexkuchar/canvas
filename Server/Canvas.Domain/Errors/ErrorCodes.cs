@@ -9,6 +9,7 @@ public static class ErrorCodes
     public const string InvalidEmail = "INVALID_EMAIL";
     public const string InvalidPasswordHash = "INVALID_PASSWORD_HASH";
     public const string InvalidPassword = "INVALID_PASSWORD";
+    public const string UserAlreadyVerified = "USER_ALREADY_VERIFIED";
 
     // Session
     public const string SessionNotFound = "SESSION_NOT_FOUND";
@@ -18,4 +19,14 @@ public static class ErrorCodes
 
     // General
     public const string UnexpectedError = "UNEXPECTED_ERROR";
+
+    // Token
+    public const string TokenAlreadyUsed = "TOKEN_ALREADY_USED";
+    public const string TokenExpired = "TOKEN_EXPIRED";
+
+    // Verification
+
+    public const string VerificationTokenNotFound = "VERIFICATION_TOKEN_NOT_FOUND";
+    public const string VerificationTokenExpired = "VERIFICATION_TOKEN_EXPIRED";
+    public const string VerificationTokenUsed = "VERIFICATION_TOKEN_USED";
 }
