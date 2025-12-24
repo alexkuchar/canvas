@@ -12,12 +12,14 @@ public class AuthController : ControllerBase
     private readonly RegisterUserHandler _registerUserHandler;
     private readonly LoginUserHandler _loginUserHandler;
     private readonly RefreshSessionHandler _refreshSessionHandler;
+    private readonly VerifyUserHandler _verifyUserHandler;
 
-    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler)
+    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler, VerifyUserHandler verifyUserHandler)
     {
         _registerUserHandler = registerUserHandler;
         _loginUserHandler = loginUserHandler;
         _refreshSessionHandler = refreshSessionHandler;
+        _verifyUserHandler = verifyUserHandler;
     }
 
     [HttpPost("register")]
@@ -86,6 +88,22 @@ public class AuthController : ControllerBase
             AccessToken: result.AccessToken,
             RefreshToken: result.RefreshToken,
             RefreshTokenExpiresAt: result.RefreshTokenExpiresAt
+        );
+
+        return Ok(responseDto);
+    }
+
+    [HttpPost("verify")]
+    public async Task<IActionResult> Verify([FromBody] VerifyRequestDto verifyRequest)
+    {
+        var command = new VerifyUserCommand(
+            verifyRequest.VerificationToken
+        );
+
+        await _verifyUserHandler.HandleAsync(command);
+
+        var responseDto = new VerifyResponseDto(
+            Message: "User verified successfully"
         );
 
         return Ok(responseDto);

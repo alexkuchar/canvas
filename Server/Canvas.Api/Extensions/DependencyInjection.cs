@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using DotNetEnv;
 using Scalar.AspNetCore;
 
 namespace Canvas.Api.Extensions;
@@ -18,6 +17,7 @@ public static class DependencyInjection
     {
         if (app.Environment.IsDevelopment())
         {
+            DotNetEnv.Env.TraversePath().Load();
             app.MapOpenApi();
             app.MapScalarApiReference();
         }

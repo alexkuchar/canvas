@@ -72,6 +72,26 @@ public class ExceptionHandlingMiddleware
                 ErrorCodes.SessionAlreadyRevoked,
                 e.Message
             ),
+            VerificationTokenNotFoundException e => (
+                HttpStatusCode.NotFound,
+                ErrorCodes.VerificationTokenNotFound,
+                e.Message
+            ),
+            VerificationTokenExpiredException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.VerificationTokenExpired,
+                e.Message
+            ),
+            VerificationTokenUsedException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.VerificationTokenUsed,
+                e.Message
+            ),
+            UserAlreadyVerifiedException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.UserAlreadyVerified,
+                e.Message
+            ),
 
             // Domain.Exceptions
             InvalidEmailException e => (
