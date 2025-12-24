@@ -1,6 +1,5 @@
 namespace Canvas.Application.Auth.Commands;
 
-public class VerifyUserCommand
-{
-    
-}
+public record VerifyUserCommand(
+    string VerificationToken
+);
