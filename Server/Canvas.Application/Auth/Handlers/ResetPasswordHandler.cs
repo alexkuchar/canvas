@@ -11,12 +11,14 @@ public class ResetPasswordHandler
     private readonly IVerificationTokenRepository _verificationTokenRepository;
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IEmailRepository _emailRepository;
 
-    public ResetPasswordHandler(IVerificationTokenRepository verificationTokenRepository, IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public ResetPasswordHandler(IVerificationTokenRepository verificationTokenRepository, IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailRepository emailRepository)
     {
         _verificationTokenRepository = verificationTokenRepository;
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _emailRepository = emailRepository;
     }
 
     public async Task HandleAsync(ResetPasswordCommand command)
@@ -37,5 +39,7 @@ public class ResetPasswordHandler
         await _userRepository.UpdateUserAsync(user);
 
         await _verificationTokenRepository.DeleteVerificationTokenAsync(token);
+
+        await _emailRepository.SendPasswordChangedEmailAsync(user.Email, user.FirstName, DateTime.UtcNow);
     }
 }

@@ -11,12 +11,14 @@ public class VerifyUserHandler
     private readonly IVerificationTokenRepository _verificationTokenRepository;
     private readonly IUserRepository _userRepository;
     private readonly IAuthRepository _authRepository;
+    private readonly IEmailRepository _emailRepository;
 
-    public VerifyUserHandler(IVerificationTokenRepository verificationTokenRepository, IUserRepository userRepository, IAuthRepository authRepository)
+    public VerifyUserHandler(IVerificationTokenRepository verificationTokenRepository, IUserRepository userRepository, IAuthRepository authRepository, IEmailRepository emailRepository)
     {
         _verificationTokenRepository = verificationTokenRepository;
         _userRepository = userRepository;
         _authRepository = authRepository;
+        _emailRepository = emailRepository;
     }
 
     public async Task HandleAsync(VerifyUserCommand command)
@@ -36,5 +38,7 @@ public class VerifyUserHandler
         user.Verify();
 
         await _userRepository.UpdateUserAsync(user);
+
+        await _emailRepository.SendWelcomeEmailAsync(user.Email, user.FirstName);
     }
 }
