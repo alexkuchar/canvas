@@ -1,14 +1,37 @@
 using DotNetEnv;
 using Scalar.AspNetCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Canvas.Api.Extensions;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApi(this IServiceCollection services)
+    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
         services.AddOpenApi();
+        services.AddCors(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddCors(this IServiceCollection services, IConfiguration configuration)
+    {
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend", policy =>
+            {
+                if (allowedOrigins.Length > 0)
+                {
+                    policy.WithOrigins(allowedOrigins)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            });
+        });
 
         return services;
     }
@@ -22,6 +45,7 @@ public static class DependencyInjection
             app.MapScalarApiReference();
         }
 
+        app.UseCors("AllowFrontend");
         app.UseHttpsRedirection();
         app.MapControllers();
 

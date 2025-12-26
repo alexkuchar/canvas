@@ -6,7 +6,7 @@ using Canvas.Infrastructure.Extensions.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApi();
+builder.Services.AddApi(builder.Configuration);
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
