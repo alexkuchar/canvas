@@ -1,0 +1,51 @@
+<main>
+  <mat-card appearance="outlined" class="register-card">
+    <mat-card-header class="register-card__header">
+      <mat-card-title>Create an account</mat-card-title>
+      <mat-card-subtitle class="register-card__subtitle"
+        >Enter your details to create an account</mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content class="register-card__content">
+      <form [formGroup]="registerForm" (submit)="onSubmit()" class="register-card__form">
+        <mat-form-field appearance="outline" class="register-card__form-field">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="fullName" />
+          @if (registerForm.get('fullName')?.hasError('required')) {
+          <mat-error> Full name is required </mat-error>
+          } @if (registerForm.get('fullName')?.hasError('minlength')) {
+          <mat-error> Full name must be at least 2 characters long </mat-error>
+          } @if (registerForm.get('fullName')?.hasError('minWords')) {
+          <mat-error> Full name must contain at least 2 words </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="register-card__form-field">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          @if (registerForm.get('email')?.hasError('required')) {
+          <mat-error> Email is required </mat-error>
+          } @if (registerForm.get('email')?.hasError('email')) {
+          <mat-error> Please enter a valid email address </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="register-card__form-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
+          <button mat-icon-button matSuffix (click)="hide.set(!hide())">
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          @if (registerForm.get('password')?.hasError('required')) {
+          <mat-error> Password is required </mat-error>
+          } @if (registerForm.get('password')?.hasError('minlength')) {
+          <mat-error> Password must be at least 8 characters long </mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-stroked-button color="primary" type="submit">Register</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</main>
