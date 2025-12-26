@@ -8,7 +8,25 @@
   "projects": {
     "web": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "none",
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true,
+          "addTypeToClassName": true,
+          "type": "service"
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true,
+          "typeSeparator": "."
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true,
+          "typeSeparator": "."
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
