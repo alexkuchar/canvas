@@ -18,6 +18,7 @@ The project follows Clean Architecture principles with the following layers:
 ## Backend Features
 
 ### Authentication
+
 - User registration with email validation
 - User login with JWT access tokens and refresh tokens
 - Session refresh mechanism
@@ -25,6 +26,7 @@ The project follows Clean Architecture principles with the following layers:
 - Password reset flow (forgot password + reset password)
 
 ### Security
+
 - Argon2 password hashing
 - JWT token-based authentication
 - Session management with token revocation
@@ -32,11 +34,13 @@ The project follows Clean Architecture principles with the following layers:
 - Password reset tokens with expiration
 
 ### Domain Entities
+
 - **User**: First name, last name, email, password hash, verification status, active status
 - **Session**: Refresh token management with expiration and revocation
 - **VerificationToken**: Supports email verification and password reset token types
 
 ### Infrastructure
+
 - PostgreSQL database with Entity Framework Core
 - Repository pattern for data access
 - Email repository interface (implementation ready)
@@ -44,17 +48,19 @@ The project follows Clean Architecture principles with the following layers:
 - Health check endpoint (`/api/health`)
 
 ### API Documentation
+
 - Scalar API documentation integrated
 
 ## Frontend
 
-- Angular 21 web application
+- Svelte Kit
 - Tailwind CSS for styling
 - Basic project structure configured
 
 ## Development Setup
 
 ### Database
+
 - PostgreSQL 16 via Docker Compose
 - Adminer database management tool (port 8080)
 - Database migrations configured
@@ -62,6 +68,7 @@ The project follows Clean Architecture principles with the following layers:
 ### Technology Stack
 
 **Backend:**
+
 - .NET 10.0
 - ASP.NET Core
 - Entity Framework Core
@@ -70,6 +77,7 @@ The project follows Clean Architecture principles with the following layers:
 - Argon2 password hashing
 
 **Frontend:**
-- Angular 21
+
+- Svelte Kit
 - Tailwind CSS 4
 - TypeScript
