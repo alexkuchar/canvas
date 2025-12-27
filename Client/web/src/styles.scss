@@ -24,3 +24,12 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.vhvw-center {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mat-sys-surface);
+}

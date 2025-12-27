@@ -49,7 +49,6 @@ import { getErrorMessage } from '../../../core/http-error.util';
     RouterLink,
   ],
   templateUrl: './register.html',
-  styleUrls: ['./register.scss'],
 })
 export class Register {
   private readonly authService = inject(AuthService);

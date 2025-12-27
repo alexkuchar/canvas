@@ -40,7 +40,6 @@ import { getErrorMessage } from '../../../core/http-error.util';
     MatError,
   ],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
 })
 export class Login {
   private readonly authService = inject(AuthService);

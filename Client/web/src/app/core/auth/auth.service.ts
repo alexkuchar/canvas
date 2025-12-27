@@ -8,6 +8,7 @@ import {
   RefreshResponse,
   User,
   ForgotPasswordRequest,
+  ResetPasswordRequest,
 } from './auth.types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -97,6 +98,10 @@ export class AuthService {
 
   forgotPassword(request: ForgotPasswordRequest) {
     return this.http.post<void>(`${this.baseUrl}/api/Auth/forgot-password`, request);
+  }
+
+  resetPassword(request: ResetPasswordRequest) {
+    return this.http.post<void>(`${this.baseUrl}/api/Auth/reset-password`, request);
   }
 
   logout() {

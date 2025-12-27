@@ -5,10 +5,9 @@ export interface Profile {
   email: string;
 }
 
-export interface TokenPair {
-  accessToken: string;
-  refreshToken: string;
-  refreshTokenExpiresAt: Date;
+export interface User {
+  user: Profile;
+  tokens: TokenPair;
 }
 
 export interface RegisterRequest {
@@ -23,18 +22,24 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface ForgotPasswordRequest {
-  email: string;
-}
-
 export interface LoginResponse {
   user: Profile;
   tokens: TokenPair;
 }
 
-export interface User {
-  user: Profile;
-  tokens: TokenPair;
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
+export interface TokenPair {
+  accessToken: string;
+  refreshToken: string;
+  refreshTokenExpiresAt: Date;
 }
 
 export interface RefreshRequest {

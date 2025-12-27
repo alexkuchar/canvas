@@ -34,7 +34,6 @@ import { getErrorMessage } from '../../../core/http-error.util';
     MatError,
   ],
   templateUrl: './forgot-password.html',
-  styleUrls: ['./forgot-password.scss'],
 })
 export class ForgotPassword {
   private readonly authService = inject(AuthService);
