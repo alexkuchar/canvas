@@ -4,10 +4,12 @@ import { Login } from './login/login';
 import { ForgotPassword } from './forgot-password/forgot-password';
 import { ResetPassword } from './reset-password/reset-password';
 import { Verify } from './verify/verify';
+import { guestGuard } from '../../core/auth/guest.guard';
 
 export const authRoutes: Routes = [
   {
     path: '',
+    canActivate: [guestGuard],
     children: [
       {
         path: 'register',
