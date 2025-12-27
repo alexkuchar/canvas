@@ -92,7 +92,11 @@ public class ExceptionHandlingMiddleware
                 ErrorCodes.UserAlreadyVerified,
                 e.Message
             ),
-
+            UserNotVerifiedException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.UserNotVerified,
+                e.Message
+            ),
             // Domain.Exceptions
             InvalidEmailException e => (
                 HttpStatusCode.BadRequest,

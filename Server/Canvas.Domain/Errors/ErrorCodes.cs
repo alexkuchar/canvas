@@ -10,6 +10,7 @@ public static class ErrorCodes
     public const string InvalidPasswordHash = "INVALID_PASSWORD_HASH";
     public const string InvalidPassword = "INVALID_PASSWORD";
     public const string UserAlreadyVerified = "USER_ALREADY_VERIFIED";
+    public const string UserNotVerified = "USER_NOT_VERIFIED";
 
     // Session
     public const string SessionNotFound = "SESSION_NOT_FOUND";

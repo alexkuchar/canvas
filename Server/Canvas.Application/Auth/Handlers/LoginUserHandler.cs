@@ -34,6 +34,8 @@ public class LoginUserHandler
 
         if (!_passwordHasher.Verify(command.Password, user.PasswordHash)) throw new InvalidPasswordException();
 
+        if (!user.IsUserVerified()) throw new UserNotVerifiedException();
+
         var accessToken = _tokenService.CreateAccessToken(user.Id.ToString(), user.Email);
 
         var refreshToken = _tokenService.CreateRefreshToken(user.Id.ToString());
