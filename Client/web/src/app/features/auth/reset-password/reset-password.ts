@@ -29,7 +29,6 @@ import { getErrorMessage } from '../../../core/http-error.util';
     MatInput,
     MatButton,
     ReactiveFormsModule,
-    MatCardFooter,
     MatError,
     MatLabel,
   ],
