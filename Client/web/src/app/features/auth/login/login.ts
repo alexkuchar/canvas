@@ -61,6 +61,7 @@ export class Login {
     this.authService.login(this.loginForm.value as unknown as LoginRequest).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
+        this.loginForm.reset();
       },
       error: (error: HttpErrorResponse) => {
         this.snackBar.open(getErrorMessage(error), 'Close', {

@@ -98,6 +98,7 @@ export class Register {
           this.snackBar.open('Please check your email for verification', 'Close', {
             duration: 5000,
           });
+          this.registerForm.reset();
         },
         error: (error: HttpErrorResponse) => {
           this.snackBar.open(getErrorMessage(error), 'Close', {

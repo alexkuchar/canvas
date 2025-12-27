@@ -53,6 +53,7 @@ export class ForgotPassword {
       .subscribe({
         next: () => {
           this.snackBar.open('Password reset email sent', 'Close', { duration: 5000 });
+          this.forgotPasswordForm.reset();
         },
         error: (error: HttpErrorResponse) => {
           this.snackBar.open(getErrorMessage(error), 'Close', { duration: 5000 });
