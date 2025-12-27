@@ -9,6 +9,7 @@ import {
   User,
   ForgotPasswordRequest,
   ResetPasswordRequest,
+  VerifyUserRequest,
 } from './auth.types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -48,6 +49,10 @@ export class AuthService {
 
   register(request: RegisterRequest) {
     return this.http.post<void>(`${this.baseUrl}/api/Auth/register`, request);
+  }
+
+  verifyUser(request: VerifyUserRequest) {
+    return this.http.post<void>(`${this.baseUrl}/api/Auth/verify`, request);
   }
 
   login(request: LoginRequest) {
