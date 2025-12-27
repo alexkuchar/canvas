@@ -10,15 +10,17 @@ public class EmailRepository : IEmailRepository
 
     private readonly IResend _resend;
     private readonly EmailOptions _options;
+    private readonly string _frontendBaseUrl;
     private readonly string _signature = "Alex at Canvas";
 
     public EmailRepository(IResend resend, IOptions<EmailOptions> options)
     {
         _resend = resend;
         _options = options.Value;
+        _frontendBaseUrl = _options.FrontendBaseUrl;
     }
 
-    public async Task SendVerificationEmailAsync(string email, string firstName, string verificationLink)
+    public async Task SendVerificationEmailAsync(string email, string firstName, string verificationToken)
     {
         var msg = new EmailMessage()
         {
@@ -28,9 +30,9 @@ public class EmailRepository : IEmailRepository
             HtmlBody = $$"""
                 <p>Hello, {{firstName}}!</p>
                 <p>Thank you for signing up for Canvas. Please click the link below to verify your account.</p>
-                <a href="{{verificationLink}}" target="_blank">Verify your account</a>
+                <a href="{{_frontendBaseUrl + "/verify?token=" + verificationToken}}" target="_blank">Verify your account</a>
                 <p>If the link doesn't work, copy and paste this URL into your browser:</p>
-                <p>{{verificationLink}}</p>
+                <p>{{_frontendBaseUrl + "/verify?token=" + verificationToken}}</p>
                 <p>If you didn't request this verification, you can safely ignore this email.</p>
                 <p>Best wishes,</p>
                 <p>{{_signature}}</p>
@@ -40,7 +42,7 @@ public class EmailRepository : IEmailRepository
         await _resend.EmailSendAsync(msg);
     }
 
-    public async Task SendPasswordResetEmailAsync(string email, string firstName, string passwordResetLink)
+    public async Task SendPasswordResetEmailAsync(string email, string firstName, string passwordResetToken)
     {
         var msg = new EmailMessage()
         {
@@ -50,9 +52,9 @@ public class EmailRepository : IEmailRepository
             HtmlBody = $$"""
                 <p>Hello, {{firstName}}!</p>
                 <p>We received a request to reset your Canvas account password. Click the link below to create a new password.</p>
-                <a href="{{passwordResetLink}}" target="_blank">Reset your password</a>
+                <a href="{{_frontendBaseUrl + "/reset-password?token=" + passwordResetToken}}" target="_blank">Reset your password</a>
                 <p>If the link doesn't work, copy and paste this URL into your browser:</p>
-                <p>{{passwordResetLink}}</p>
+                <p>{{_frontendBaseUrl + "/reset-password?token=" + passwordResetToken}}</p>
                 <p>This link will expire in 15 minutes for security reasons.</p>
                 <p>If you didn't request a password reset, you can safely ignore this email. Your password will not be changed.</p>
                 <p>Best wishes,</p>

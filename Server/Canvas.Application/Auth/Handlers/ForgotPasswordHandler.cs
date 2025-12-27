@@ -26,7 +26,7 @@ public class ForgotPasswordHandler
         var user = await _userRepository.GetUserByEmailAsync(command.Email);
         if (user == null) throw new UserNotFoundException(command.Email);
 
-        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)).Replace('+', '-').Replace('/', '_').TrimEnd('=');
         var forgotPasswordToken = new VerificationToken(
             userId: user.Id,
             token: token,
@@ -36,11 +36,10 @@ public class ForgotPasswordHandler
 
         await _verificationTokenRepository.AddVerificationTokenAsync(forgotPasswordToken);
 
-        // TODO: Replace with actual URI when frontend is ready. This is a temporary solution.
         await _emailRepository.SendPasswordResetEmailAsync(
             email: command.Email,
             firstName: user.FirstName,
-            passwordResetLink: $"http://localhost:5163/api/Auth/reset-password?token={forgotPasswordToken.Token}"
+            passwordResetToken: forgotPasswordToken.Token
         );
     }
 }

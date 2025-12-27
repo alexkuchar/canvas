@@ -4,5 +4,6 @@ public class EmailOptions
 {
     public string ApiKey { get; set; } = null!;
     public string From { get; set; } = null!;
+    public string FrontendBaseUrl { get; set; } = null!;
 }
 

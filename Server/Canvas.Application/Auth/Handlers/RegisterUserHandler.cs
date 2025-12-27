@@ -40,7 +40,7 @@ public class RegisterUserHandler
 
         await _userRepository.AddUserAsync(user);
 
-        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)).Replace('+', '-').Replace('/', '_').TrimEnd('=');
 
         var verificationToken = new VerificationToken(
             userId: user.Id,
@@ -55,7 +55,7 @@ public class RegisterUserHandler
         await _emailRepository.SendVerificationEmailAsync(
             email: command.Email,
             firstName: command.FirstName,
-            verificationLink: $"http://localhost:5163/api/Auth/verify-email?token={verificationToken.Token}"
+            verificationToken: verificationToken.Token
         );
 
         return user;

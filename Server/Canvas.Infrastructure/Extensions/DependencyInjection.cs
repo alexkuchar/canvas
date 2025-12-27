@@ -26,6 +26,7 @@ public static class DependencyInjection
         {
             o.ApiKey = Environment.GetEnvironmentVariable("RESEND_API_KEY") ?? throw new InvalidOperationException("RESEND_API_KEY is not set");
             o.From = Environment.GetEnvironmentVariable("RESEND_FROM") ?? throw new InvalidOperationException("RESEND_FROM is not set");
+            o.FrontendBaseUrl = Environment.GetEnvironmentVariable("FRONTEND_BASE_URL") ?? throw new InvalidOperationException("FRONTEND_BASE_URL is not set");
         });
 
         // Resend
