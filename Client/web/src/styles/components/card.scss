@@ -1,23 +1,35 @@
-main {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--mat-sys-surface);
-}
-
-.login-card {
+.card {
   width: 100%;
   max-width: 400px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   flex-direction: column;
   overflow: hidden;
 
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    align-items: start;
+    justify-content: start;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   &__subtitle {
-    font-weight: 400;
+    font-weight: 400 !important;
     font-size: 0.875rem;
     color: var(--mat-sys-on-surface-variant);
     margin: 0;
@@ -54,11 +66,11 @@ main {
     gap: 0.5rem;
     width: 100%;
     padding: 0;
+  }
 
-    a {
-      text-decoration: none;
-      color: var(--mat-sys-primary);
-      cursor: pointer;
-    }
+  a {
+    text-decoration: none;
+    color: var(--mat-sys-primary);
+    cursor: pointer;
   }
 }

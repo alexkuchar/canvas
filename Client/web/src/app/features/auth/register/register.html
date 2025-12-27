@@ -1,14 +1,14 @@
 <main>
-  <mat-card appearance="outlined" class="register-card">
-    <mat-card-header class="register-card__header">
-      <mat-card-title>Create an account</mat-card-title>
-      <mat-card-subtitle class="register-card__subtitle"
+  <mat-card appearance="outlined" class="card">
+    <mat-card-header class="card__header">
+      <mat-card-title class="card__title">Create an account</mat-card-title>
+      <mat-card-subtitle class="card__subtitle"
         >Enter your details to create an account</mat-card-subtitle
       >
     </mat-card-header>
-    <mat-card-content class="register-card__content">
-      <form [formGroup]="registerForm" (submit)="onSubmit()" class="register-card__form">
-        <mat-form-field appearance="outline" class="register-card__form-field">
+    <mat-card-content class="card__content">
+      <form [formGroup]="registerForm" (submit)="onSubmit()" class="card__form">
+        <mat-form-field appearance="outline" class="card__form-field">
           <mat-label>Full Name</mat-label>
           <input matInput formControlName="fullName" />
           @if (registerForm.get('fullName')?.hasError('required')) {
@@ -20,7 +20,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="register-card__form-field">
+        <mat-form-field appearance="outline" class="card__form-field">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" />
           @if (registerForm.get('email')?.hasError('required')) {
@@ -30,7 +30,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="register-card__form-field">
+        <mat-form-field appearance="outline" class="card__form-field">
           <mat-label>Password</mat-label>
           <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
           <button mat-icon-button matSuffix (click)="hide.set(!hide())">
@@ -46,9 +46,9 @@
 
         <button mat-stroked-button color="primary" type="submit">Register</button>
       </form>
-      <mat-card-footer class="register-card__footer">
-        <p>Already have an account? <a routerLink="/login">Login</a></p>
-      </mat-card-footer>
     </mat-card-content>
+    <mat-card-footer class="card__footer">
+      <p>Already have an account? <a routerLink="/login">Login</a></p>
+    </mat-card-footer>
   </mat-card>
 </main>

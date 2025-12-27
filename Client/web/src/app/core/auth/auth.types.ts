@@ -23,6 +23,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
 export interface LoginResponse {
   user: Profile;
   tokens: TokenPair;
