@@ -1,0 +1,58 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span class="layout__brand">Canvas</span>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="userMenu"
+      [attr.aria-label]="'User menu for ' + (userDisplayName() || 'user')"
+      [attr.aria-expanded]="userMenuOpen()"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu
+      #userMenu="matMenu"
+      (opened)="userMenuOpen.set(true)"
+      (closed)="userMenuOpen.set(false)"
+    >
+      @if (user()) {
+      <div class="layout__user-info">
+        <div class="layout__user-name">{{ userDisplayName() }}</div>
+        <div class="layout__user-email">{{ user()!.user.email }}</div>
+      </div>
+      }
+      <mat-divider />
+      @for (group of menuItems; track group.group) {
+      <div class="layout__menu-group">
+        <span>{{ group.group }}</span>
+        @for (item of group.items; track item.label) {
+        <button mat-menu-item (click)="item.action()" [attr.aria-label]="item.label">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </button>
+        }
+      </div>
+      }
+      <mat-divider />
+    </mat-menu>
+  </mat-toolbar-row>
+</mat-toolbar>
+<main class="layout">
+  <nav class="layout__sidebar" [attr.aria-label]="'Main navigation'">
+    <mat-nav-list class="layout__sidebar-nav">
+      @for (item of sidebarItems; track item.label) {
+      <mat-list-item
+        [activated]="isActiveRoute(item.route)"
+        [routerLink]="[item.route]"
+        [attr.aria-current]="isActiveRoute(item.route) ? 'page' : null"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </mat-list-item>
+      }
+    </mat-nav-list>
+  </nav>
+  <div class="layout__main" [attr.role]="'main'">
+    <router-outlet></router-outlet>
+  </div>
+</main>
