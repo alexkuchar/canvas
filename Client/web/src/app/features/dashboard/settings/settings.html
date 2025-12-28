@@ -1,0 +1,74 @@
+<main class="settings">
+  <header class="settings__header">
+    <h1 class="settings__title">Settings</h1>
+    <p class="settings__subtitle">Manage your account settings and preferences</p>
+  </header>
+
+  <form [formGroup]="settingsForm" (submit)="onSubmit()" class="settings__form">
+    <section class="settings__section">
+      <h2 class="settings__section-title">Personal Information</h2>
+      <div class="settings__fields">
+        <mat-form-field appearance="outline" class="settings__field">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" />
+          @if (settingsForm.get('firstName')?.hasError('required')) {
+          <mat-error>First name is required</mat-error>
+          } @if (settingsForm.get('firstName')?.hasError('minlength')) {
+          <mat-error>First name must be at least 2 characters long</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="settings__field">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          @if (settingsForm.get('lastName')?.hasError('required')) {
+          <mat-error>Last name is required</mat-error>
+          } @if (settingsForm.get('lastName')?.hasError('minlength')) {
+          <mat-error>Last name must be at least 2 characters long</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="settings__field">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          @if (settingsForm.get('email')?.hasError('required')) {
+          <mat-error>Email is required</mat-error>
+          } @if (settingsForm.get('email')?.hasError('email')) {
+          <mat-error>Please enter a valid email address</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <section class="settings__section">
+      <h2 class="settings__section-title">Security</h2>
+      <div class="settings__fields">
+        <mat-form-field appearance="outline" class="settings__field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hide.set(!hide())"
+            [attr.aria-label]="hide() ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (settingsForm.get('password')?.hasError('required')) {
+          <mat-error>Password is required</mat-error>
+          } @if (settingsForm.get('password')?.hasError('minlength')) {
+          <mat-error>Password must be at least 8 characters long</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </section>
+
+    <div class="settings__actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="settingsForm.invalid">
+        Save Changes
+      </button>
+      <button mat-button type="button" (click)="settingsForm.reset()">Reset</button>
+    </div>
+  </form>
+</main>
