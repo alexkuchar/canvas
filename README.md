@@ -53,9 +53,18 @@ The project follows Clean Architecture principles with the following layers:
 
 ## Frontend
 
-- Svelte Kit
-- Tailwind CSS for styling
-- Basic project structure configured
+### Mobile (Flutter)
+
+- Flutter with Dart SDK ^3.10.4
+- Cross-platform mobile application (iOS, Android, Web, Linux, macOS, Windows)
+- Material Design support
+
+### Web (Angular)
+
+- Angular 21.0.0
+- Angular Material for UI components
+- SCSS for styling
+- TypeScript
 
 ## Development Setup
 
@@ -78,6 +87,5 @@ The project follows Clean Architecture principles with the following layers:
 
 **Frontend:**
 
-- Svelte Kit
-- Tailwind CSS 4
-- TypeScript
+- **Mobile**: Flutter (Dart SDK ^3.10.4)
+- **Web**: Angular 21.0.0, Angular Material, SCSS, TypeScript
