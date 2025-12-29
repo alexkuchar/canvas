@@ -6,7 +6,7 @@ using Canvas.Application.Auth.Handlers;
 namespace Canvas.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly RegisterUserHandler _registerUserHandler;
