@@ -1,5 +1,6 @@
 using Canvas.Application.Auth.Handlers;
 using Canvas.Application.Options;
+using Canvas.Application.User.Handlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ public static class DependencyInjection
     {
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
+        // Auth
         services.AddScoped<RegisterUserHandler>();
         services.AddScoped<LoginUserHandler>();
         services.AddScoped<RefreshSessionHandler>();
@@ -18,6 +20,8 @@ public static class DependencyInjection
         services.AddScoped<ForgotPasswordHandler>();
         services.AddScoped<ResetPasswordHandler>();
 
+        // User
+        services.AddScoped<UpdateUserHandler>();
         return services;
     }
 }
