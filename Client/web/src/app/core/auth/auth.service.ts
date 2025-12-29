@@ -10,9 +10,11 @@ import {
   ForgotPasswordRequest,
   ResetPasswordRequest,
   VerifyUserRequest,
+  Profile,
 } from './auth.types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { UpdateUserResponse } from '../user/user.types';
 
 @Injectable({
   providedIn: 'root',
@@ -107,6 +109,28 @@ export class AuthService {
 
   resetPassword(request: ResetPasswordRequest) {
     return this.http.post<void>(`${this.baseUrl}/api/Auth/reset-password`, request);
+  }
+
+  updateUser(user: UpdateUserResponse) {
+    this.userSubject.next({
+      user: {
+        ...this.user?.user,
+        ...user,
+      },
+      tokens: this.user?.tokens ?? {
+        accessToken: '',
+        refreshToken: '',
+        refreshTokenExpiresAt: new Date(),
+      },
+    });
+
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        ...this.user?.user,
+        ...user,
+      })
+    );
   }
 
   logout() {
