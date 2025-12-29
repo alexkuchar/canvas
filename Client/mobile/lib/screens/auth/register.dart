@@ -8,10 +8,6 @@ class RegisterPage extends StatelessWidget {
     Navigator.pushNamed(context, '/login');
   }
 
-  void onForgotPasswordPressed(BuildContext context) {
-    // TODO: Implement forgot password
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

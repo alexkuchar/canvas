@@ -5,7 +5,7 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   void onForgotPasswordPressed(BuildContext context) {
-    // TODO: Implement forgot password
+    Navigator.pushNamed(context, '/forgot-password');
   }
 
   void onDonHaveAnAccountPressed(BuildContext context) {
