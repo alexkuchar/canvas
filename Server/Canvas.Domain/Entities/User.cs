@@ -73,6 +73,7 @@ public class User
     public void ChangePassword(string passwordHash)
     {
         PasswordHash = passwordHash ?? throw new InvalidPasswordHashException();
+
         Touch();
     }
 

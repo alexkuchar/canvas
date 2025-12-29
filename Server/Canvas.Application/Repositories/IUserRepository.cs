@@ -4,9 +4,9 @@ namespace Canvas.Application.Repositories;
 
 public interface IUserRepository
 {
-    Task<User?> GetUserByIdAsync(Guid id);
-    Task<User?> GetUserByEmailAsync(string email);
-    Task AddUserAsync(User user);
-    Task UpdateUserAsync(User user);
+    Task<Domain.Entities.User?> GetUserByIdAsync(Guid id);
+    Task<Domain.Entities.User?> GetUserByEmailAsync(string email);
+    Task AddUserAsync(Domain.Entities.User user);
+    Task UpdateUserAsync(Domain.Entities.User user);
     Task DeleteUserAsync(Guid id);
 }

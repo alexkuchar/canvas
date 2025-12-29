@@ -24,21 +24,21 @@ public class RegisterUserHandler
         _emailRepository = emailRepository;
     }
 
-    public async Task<User> HandleAsync(RegisterUserCommand command)
+    public async Task<Domain.Entities.User> HandleAsync(RegisterUserCommand command)
     {
         var existingUser = await _userRepository.GetUserByEmailAsync(command.Email);
-        if (existingUser != null) throw new EmailAlreadyInUseException(command.Email);
+        if (existingUser is not null) throw new EmailAlreadyInUseException(command.Email);
 
         var passwordHash = _passwordHasher.Hash(command.Password);
 
-        var user = new User(
+        var user = new Domain.Entities.User(
             command.FirstName,
             command.LastName,
             command.Email,
             passwordHash
         );
 
-        await _userRepository.AddUserAsync(user);
+        await _userRepository.AddUserAsync(user: user);
 
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)).Replace('+', '-').Replace('/', '_').TrimEnd('=');
 
