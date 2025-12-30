@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/auth/forgot_password.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/auth/register.dart';
+import 'package:mobile/screens/auth/verification_notice.dart';
 import 'package:mobile/screens/onboarding.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterPage(),
+        '/verification-notice': (context) => const VerificationNoticeScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
       },
       theme: ThemeData(

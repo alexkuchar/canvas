@@ -22,13 +22,7 @@ class RegisterPage extends StatelessWidget {
 
     AuthService.register(firstName, lastName, email, password)
         .then((_) {
-          Navigator.pushNamed(context, '/login');
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            const SnackBar(
-              content: Text('Please check your email for verification'),
-              duration: Duration(seconds: 5),
-            ),
-          );
+          Navigator.pushNamed(context, '/verification-notice');
         })
         .catchError((error) {
           final errorMessage = error is Exception
