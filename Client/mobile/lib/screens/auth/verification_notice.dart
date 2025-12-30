@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
 import 'package:open_mail/open_mail.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class VerificationNoticeScreen extends StatelessWidget {
   const VerificationNoticeScreen({super.key});
