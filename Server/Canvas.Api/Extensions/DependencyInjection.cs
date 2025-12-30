@@ -23,13 +23,9 @@ public static class DependencyInjection
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
-                if (allowedOrigins.Length > 0)
-                {
-                    policy.WithOrigins(allowedOrigins)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                }
+                policy.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
 
