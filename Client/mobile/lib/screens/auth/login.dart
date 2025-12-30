@@ -14,6 +14,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -42,9 +45,17 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TextField(decoration: InputDecoration(labelText: 'Email')),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
                 const SizedBox(height: AppSpacing.spacingSmall),
-                TextField(decoration: InputDecoration(labelText: 'Password')),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'Password'),
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.spacingDefault),
