@@ -4,6 +4,9 @@ import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/auth/register.dart';
 import 'package:mobile/screens/onboarding.dart';
 
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: scaffoldMessengerKey,
       initialRoute: '/',
       routes: {
         '/': (context) => const OnboardingScreen(),
