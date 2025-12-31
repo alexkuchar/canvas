@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
+import 'package:mobile/main.dart';
+import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/utils/error_handler.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -8,8 +11,19 @@ class LoginScreen extends StatelessWidget {
     Navigator.pushNamed(context, '/forgot-password');
   }
 
-  void onDonHaveAnAccountPressed(BuildContext context) {
+  void onDontHaveAnAccountPressed(BuildContext context) {
     Navigator.pushNamed(context, '/register');
+  }
+
+  void onLoginPressed(BuildContext context, String email, String password) {
+    AuthService.login(email, password)
+        .then((_) {
+          navigatorKey.currentState?.pushReplacementNamed('/dashboard');
+        })
+        .catchError((error) {
+          final errorMessage = ErrorHandler.parseErrorMessage(error);
+          ErrorHandler.showErrorSnackBar(errorMessage);
+        });
   }
 
   @override
@@ -66,7 +80,11 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () => onLoginPressed(
+                      context,
+                      emailController.text,
+                      passwordController.text,
+                    ),
                     child: Text('Continue'),
                   ),
                 ),
@@ -84,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                     const Spacer(),
                     SizedBox(
                       child: TextButton(
-                        onPressed: () => onDonHaveAnAccountPressed(context),
+                        onPressed: () => onDontHaveAnAccountPressed(context),
                         child: Text("Don't have an account?"),
                       ),
                     ),

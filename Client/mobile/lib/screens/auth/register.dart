@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
-import 'package:mobile/main.dart';
 import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/utils/error_handler.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -29,13 +29,8 @@ class RegisterPage extends StatelessWidget {
           );
         })
         .catchError((error) {
-          final errorMessage = error.toString();
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            SnackBar(
-              content: Text(errorMessage),
-              duration: const Duration(seconds: 5),
-            ),
-          );
+          final errorMessage = ErrorHandler.parseErrorMessage(error);
+          ErrorHandler.showErrorSnackBar(errorMessage);
         });
   }
 

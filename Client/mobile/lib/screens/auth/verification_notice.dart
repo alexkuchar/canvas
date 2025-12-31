@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
-import 'package:mobile/main.dart';
 import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/utils/error_handler.dart';
 import 'package:open_mail/open_mail.dart';
 
 class VerificationNoticeScreen extends StatelessWidget {
@@ -26,21 +26,16 @@ class VerificationNoticeScreen extends StatelessWidget {
   void onResendVerificationLinkPressed(BuildContext context, String email) {
     AuthService.resendVerificationEmail(email)
         .then((_) {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
               content: Text('Verification link resent successfully'),
-              duration: const Duration(seconds: 5),
+              duration: Duration(seconds: 5),
             ),
           );
         })
         .catchError((error) {
-          final errorMessage = error.toString();
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            SnackBar(
-              content: Text(errorMessage),
-              duration: const Duration(seconds: 5),
-            ),
-          );
+          final errorMessage = ErrorHandler.parseErrorMessage(error);
+          ErrorHandler.showErrorSnackBar(errorMessage);
         });
   }
 

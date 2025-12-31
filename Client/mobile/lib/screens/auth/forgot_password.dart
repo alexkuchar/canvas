@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
+import 'package:mobile/services/auth_service.dart';
+import 'package:mobile/utils/error_handler.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
 
-  void onContinuePressed() {
-    // TODO: Send request to backend to send reset password email
+  void onContinuePressed(BuildContext context, String email) {
+    AuthService.forgotPassword(email)
+        .then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Password reset email sent'),
+              duration: Duration(seconds: 5),
+            ),
+          );
+          Navigator.pushReplacementNamed(context, '/login');
+        })
+        .catchError((error) {
+          final errorMessage = ErrorHandler.parseErrorMessage(error);
+          ErrorHandler.showErrorSnackBar(errorMessage);
+        });
   }
 
   void onRememberYourPasswordPressed(BuildContext context) {
@@ -14,6 +29,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -44,14 +60,19 @@ class ForgotPasswordScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TextField(decoration: InputDecoration(labelText: 'Email')),
+                TextField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.spacingDefault),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: () => onContinuePressed(),
+                onPressed: () =>
+                    onContinuePressed(context, emailController.text),
                 child: Text('Continue'),
               ),
             ),
