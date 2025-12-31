@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/services/auth_service.dart';
 
 class ErrorHandler {
   ErrorHandler._();
@@ -16,20 +17,31 @@ class ErrorHandler {
     );
   }
 
-  static String parseErrorMessage(DioException error) {
-    if (error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.receiveTimeout) {
+  static String parseErrorMessage(dynamic error) {
+    // Handle AuthException
+    if (error is AuthException) {
+      return error.message;
+    }
+
+    // Handle DioException
+    if (error is! DioException) {
+      return error.toString();
+    }
+
+    final dioError = error;
+    if (dioError.type == DioExceptionType.connectionTimeout ||
+        dioError.type == DioExceptionType.sendTimeout ||
+        dioError.type == DioExceptionType.receiveTimeout) {
       return 'Connection timeout. Please check your internet connection and try again.';
     }
 
-    if (error.type == DioExceptionType.connectionError) {
+    if (dioError.type == DioExceptionType.connectionError) {
       return 'Unable to connect to the server. Please check your internet connection.';
     }
 
-    if (error.response != null) {
-      final statusCode = error.response!.statusCode;
-      final responseData = error.response!.data;
+    if (dioError.response != null) {
+      final statusCode = dioError.response!.statusCode;
+      final responseData = dioError.response!.data;
 
       String? errorMessage;
       if (responseData is Map<String, dynamic>) {
