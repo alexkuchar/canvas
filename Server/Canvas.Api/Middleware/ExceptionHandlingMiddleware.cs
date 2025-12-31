@@ -97,6 +97,11 @@ public class ExceptionHandlingMiddleware
                 ErrorCodes.UserNotVerified,
                 e.Message
             ),
+            VerificationEmailRateLimitException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.VerificationEmailRateLimit,
+                e.Message
+            ),
             // Domain.Exceptions
             InvalidEmailException e => (
                 HttpStatusCode.BadRequest,

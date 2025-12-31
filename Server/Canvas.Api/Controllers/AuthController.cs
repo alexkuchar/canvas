@@ -15,8 +15,9 @@ public class AuthController : ControllerBase
     private readonly VerifyUserHandler _verifyUserHandler;
     private readonly ForgotPasswordHandler _forgotPasswordHandler;
     private readonly ResetPasswordHandler _resetPasswordHandler;
+    private readonly ResendVerificationEmailHandler _resendVerificationEmailHandler;
 
-    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler, VerifyUserHandler verifyUserHandler, ForgotPasswordHandler forgotPasswordHandler, ResetPasswordHandler resetPasswordHandler)
+    public AuthController(RegisterUserHandler registerUserHandler, LoginUserHandler loginUserHandler, RefreshSessionHandler refreshSessionHandler, VerifyUserHandler verifyUserHandler, ForgotPasswordHandler forgotPasswordHandler, ResetPasswordHandler resetPasswordHandler, ResendVerificationEmailHandler resendVerificationEmailHandler)
     {
         _registerUserHandler = registerUserHandler;
         _loginUserHandler = loginUserHandler;
@@ -24,6 +25,7 @@ public class AuthController : ControllerBase
         _verifyUserHandler = verifyUserHandler;
         _forgotPasswordHandler = forgotPasswordHandler;
         _resetPasswordHandler = resetPasswordHandler;
+        _resendVerificationEmailHandler = resendVerificationEmailHandler;
     }
 
     [HttpPost("register")]
@@ -136,5 +138,17 @@ public class AuthController : ControllerBase
         await _resetPasswordHandler.HandleAsync(command);
 
         return Ok(new { Message = "Password reset successfully" });
+    }
+
+    [HttpPost("resend-verification-email")]
+    public async Task<IActionResult> ResendVerificationEmail([FromBody] ResendVerificationEmailDto resendVerificationEmailDto)
+    {
+        var command = new ResendVerificationEmailCommand(
+            resendVerificationEmailDto.Email
+        );
+
+        await _resendVerificationEmailHandler.HandleAsync(command);
+
+        return Ok(new { Message = "Verification email resent successfully" });
     }
 }
