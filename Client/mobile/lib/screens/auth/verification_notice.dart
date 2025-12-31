@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/constants/spacing.dart';
+import 'package:mobile/main.dart';
+import 'package:mobile/services/auth_service.dart';
 import 'package:open_mail/open_mail.dart';
 
 class VerificationNoticeScreen extends StatelessWidget {
@@ -21,8 +23,31 @@ class VerificationNoticeScreen extends StatelessWidget {
     }
   }
 
+  void onResendVerificationLinkPressed(BuildContext context, String email) {
+    AuthService.resendVerificationEmail(email)
+        .then((_) {
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            SnackBar(
+              content: Text('Verification link resent successfully'),
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        })
+        .catchError((error) {
+          final errorMessage = error.toString();
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final email = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       body: Padding(
         padding: AppSpacing.paddingDefaultAll,
@@ -53,7 +78,8 @@ class VerificationNoticeScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            onResendVerificationLinkPressed(context, email),
                         child: Text("Resend verification link"),
                       ),
                     ),

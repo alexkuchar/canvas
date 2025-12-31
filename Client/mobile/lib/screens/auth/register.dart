@@ -22,12 +22,14 @@ class RegisterPage extends StatelessWidget {
 
     AuthService.register(firstName, lastName, email, password)
         .then((_) {
-          Navigator.pushNamed(context, '/verification-notice');
+          Navigator.pushNamed(
+            context,
+            '/verification-notice',
+            arguments: email,
+          );
         })
         .catchError((error) {
-          final errorMessage = error is Exception
-              ? error.toString().replaceFirst('Exception: ', '')
-              : error.toString();
+          final errorMessage = error.toString();
           scaffoldMessengerKey.currentState?.showSnackBar(
             SnackBar(
               content: Text(errorMessage),

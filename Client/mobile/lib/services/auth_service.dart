@@ -1,7 +1,14 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:mobile/config/app_config.dart';
+import 'package:mobile/utils/error_handler.dart';
+
+class AuthException implements Exception {
+  final String message;
+  AuthException(this.message);
+
+  @override
+  String toString() => message;
+}
 
 class AuthService {
   static Future<void> register(
@@ -10,46 +17,85 @@ class AuthService {
     String email,
     String password,
   ) async {
-    final response = await http.post(
-      Uri.parse("${AppConfig.baseUrl}/api/auth/register"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "password": password,
-      }),
-    );
+    try {
+      final response = await Dio().post(
+        "${AppConfig.baseUrl}/api/auth/register",
+        data: {
+          "firstName": firstName,
+          "lastName": lastName,
+          "email": email,
+          "password": password,
+        },
+        options: Options(validateStatus: (status) => status! < 500),
+      );
 
-    if (response.statusCode != 201) {
-      String errorMessage = 'Failed to register';
-
-      if (response.body.isNotEmpty) {
-        try {
-          final errorJson = jsonDecode(response.body) as Map<String, dynamic>;
-
-          if (errorJson.containsKey('error')) {
-            final error = errorJson['error'];
-            if (error is Map<String, dynamic> && error.containsKey('message')) {
-              final message = error['message'] as String?;
-              if (message != null && message.isNotEmpty) {
-                errorMessage = message;
-              }
-            }
-          } else if (errorJson.containsKey('message')) {
-            final message = errorJson['message'] as String?;
-            if (message != null && message.isNotEmpty) {
-              errorMessage = message;
-            }
-          }
-        } catch (e) {
-          if (response.body.length < 500) {
-            errorMessage = response.body;
-          }
-        }
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        return;
       }
 
-      throw Exception(errorMessage);
+      final errorMessage = ErrorHandler.parseErrorMessage(
+        DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          type: DioExceptionType.badResponse,
+        ),
+      );
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
+    } on DioException catch (error) {
+      final errorMessage = ErrorHandler.parseErrorMessage(error);
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
+    } catch (error) {
+      final errorMessage = error is AuthException
+          ? error.message
+          : 'An unexpected error occurred. Please try again.';
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
+    }
+  }
+
+  static Future<void> resendVerificationEmail(String email) async {
+    try {
+      final response = await Dio().post(
+        "${AppConfig.baseUrl}/api/auth/resend-verification-email",
+        data: {"email": email},
+        options: Options(validateStatus: (status) => status! < 500),
+      );
+
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        return;
+      }
+
+      final errorMessage = ErrorHandler.parseErrorMessage(
+        DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          type: DioExceptionType.badResponse,
+        ),
+      );
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
+    } on DioException catch (error) {
+      final errorMessage = ErrorHandler.parseErrorMessage(error);
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
+    } catch (error) {
+      final errorMessage = error is AuthException
+          ? error.message
+          : 'An unexpected error occurred. Please try again.';
+      final exception = AuthException(errorMessage);
+      ErrorHandler.showErrorSnackBar(errorMessage);
+      throw exception;
     }
   }
 }
