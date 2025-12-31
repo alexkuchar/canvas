@@ -31,4 +31,5 @@ public static class ErrorCodes
     public const string VerificationTokenExpired = "VERIFICATION_TOKEN_EXPIRED";
     public const string VerificationTokenUsed = "VERIFICATION_TOKEN_USED";
     public const string VerificationTokenTypeMismatch = "VERIFICATION_TOKEN_TYPE_MISMATCH";
+    public const string VerificationEmailRateLimit = "VERIFICATION_EMAIL_RATE_LIMIT";
 }

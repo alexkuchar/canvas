@@ -15,6 +15,7 @@ public class User
 
     public bool IsVerified { get; private set; }
     public DateTime VerifiedAt { get; private set; }
+    public DateTime? LastVerificationEmailSentAt { get; set; }
 
     public bool IsActive { get; private set; }
 
@@ -30,7 +31,8 @@ public class User
         string firstName,
         string lastName,
         string email,
-        string passwordHash
+        string passwordHash,
+        DateTime? lastVerificationEmailSentAt
     )
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
@@ -44,6 +46,7 @@ public class User
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+        LastVerificationEmailSentAt = lastVerificationEmailSentAt;
     }
 
     public bool IsUserVerified()
