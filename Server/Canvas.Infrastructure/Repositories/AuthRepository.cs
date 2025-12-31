@@ -2,6 +2,7 @@ using Canvas.Infrastructure.Persistence;
 using Canvas.Application.Repositories;
 using Canvas.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Canvas.Domain.Enums;
 
 namespace Canvas.Infrastructure.Repositories;
 

@@ -19,6 +19,7 @@ public static class DependencyInjection
         services.AddScoped<VerifyUserHandler>();
         services.AddScoped<ForgotPasswordHandler>();
         services.AddScoped<ResetPasswordHandler>();
+        services.AddScoped<ResendVerificationEmailHandler>();
 
         // User
         services.AddScoped<UpdateUserHandler>();

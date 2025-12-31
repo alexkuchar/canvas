@@ -1,51 +1,40 @@
+using System.Reflection.Emit;
 using System.Security.Cryptography;
 using Canvas.Application.Auth.Commands;
 using Canvas.Application.Auth.Exceptions;
 using Canvas.Application.Repositories;
-using Canvas.Application.Security;
 using Canvas.Domain.Entities;
 using Canvas.Domain.Enums;
+using Canvas.Domain.Exceptions;
 
 namespace Canvas.Application.Auth.Handlers;
 
-public class RegisterUserHandler
+public class ResendVerificationEmailHandler
 {
     private readonly IAuthRepository _authRepository;
     private readonly IUserRepository _userRepository;
     private readonly IVerificationTokenRepository _verificationTokenRepository;
-    private readonly IPasswordHasher _passwordHasher;
     private readonly IEmailRepository _emailRepository;
-    public RegisterUserHandler(IAuthRepository authRepository, IUserRepository userRepository, IVerificationTokenRepository verificationTokenRepository, IPasswordHasher passwordHasher, IEmailRepository emailRepository)
+    public ResendVerificationEmailHandler(IAuthRepository authRepository, IUserRepository userRepository, IVerificationTokenRepository verificationTokenRepository, IEmailRepository emailRepository)
     {
         _authRepository = authRepository;
         _userRepository = userRepository;
         _verificationTokenRepository = verificationTokenRepository;
-        _passwordHasher = passwordHasher;
         _emailRepository = emailRepository;
     }
 
-    public async Task<Domain.Entities.User> HandleAsync(RegisterUserCommand command)
+    public async Task HandleAsync(ResendVerificationEmailCommand command)
     {
-        var existingUser = await _userRepository.GetUserByEmailAsync(command.Email);
-        if (existingUser is not null) throw new EmailAlreadyInUseException(command.Email);
+        var user = await _userRepository.GetUserByEmailAsync(command.Email) ?? throw new UserNotFoundException(command.Email);
 
-        var passwordHash = _passwordHasher.Hash(command.Password);
-
-        var user = new Domain.Entities.User(
-            firstName: command.FirstName,
-            lastName: command.LastName,
-            email: command.Email,
-            passwordHash: passwordHash,
-            lastVerificationEmailSentAt: DateTime.UtcNow
-        );
-
-        await _userRepository.AddUserAsync(user: user);
+        if (user.IsUserVerified()) throw new UserAlreadyVerifiedException();
+        if (user.LastVerificationEmailSentAt is not null && user.LastVerificationEmailSentAt.Value.AddMinutes(1) > DateTime.UtcNow) throw new VerificationEmailRateLimitException((int)(user.LastVerificationEmailSentAt.Value.AddMinutes(1) - DateTime.UtcNow).TotalSeconds);
 
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)).Replace('+', '-').Replace('/', '_').TrimEnd('=');
 
         var verificationToken = new VerificationToken(
-            userId: user.Id,
             token: token,
+            userId: user.Id,
             expiresAt: DateTime.UtcNow.AddMinutes(15),
             verificationTokenType: VerificationTokenType.EmailVerification
         );
@@ -54,10 +43,13 @@ public class RegisterUserHandler
 
         await _emailRepository.SendVerificationEmailAsync(
             email: command.Email,
-            firstName: command.FirstName,
+            firstName: user.FirstName,
             verificationToken: verificationToken.Token
         );
 
-        return user;
+        user.LastVerificationEmailSentAt = DateTime.UtcNow;
+        user.Touch();
+
+        await _userRepository.UpdateUserAsync(user);
     }
 }
