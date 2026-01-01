@@ -7,6 +7,7 @@ import 'package:mobile/screens/dashboard/overview.dart';
 import 'package:mobile/screens/onboarding.dart';
 import 'package:mobile/services/api_service.dart';
 import 'package:mobile/widgets/common/auth_guard.dart';
+import 'package:mobile/widgets/common/guest_guard.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -27,11 +28,13 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: scaffoldMessengerKey,
       initialRoute: '/',
       routes: {
-        '/': (context) => const OnboardingScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterPage(),
-        '/verification-notice': (context) => const VerificationNoticeScreen(),
-        '/forgot-password': (context) => const ForgotPasswordScreen(),
+        '/': (context) => GuestGuardWidget(child: const OnboardingScreen()),
+        '/login': (context) => GuestGuardWidget(child: const LoginScreen()),
+        '/register': (context) => GuestGuardWidget(child: const RegisterPage()),
+        '/verification-notice': (context) =>
+            GuestGuardWidget(child: const VerificationNoticeScreen()),
+        '/forgot-password': (context) =>
+            GuestGuardWidget(child: const ForgotPasswordScreen()),
         '/dashboard': (context) =>
             AuthGuardWidget(child: const DashboardOverviewScreen()),
       },
