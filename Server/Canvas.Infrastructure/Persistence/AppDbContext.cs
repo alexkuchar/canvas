@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<VerificationToken> VerificationTokens => Set<VerificationToken>();
-
+    public DbSet<Board> Boards => Set<Board>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
@@ -47,6 +47,17 @@ public class AppDbContext : DbContext
             .WithMany(u => u.VerificationTokens)
             .HasPrincipalKey(u => u.Id)
             .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Board>()
+            .HasIndex(b => b.Title)
+            .IsUnique();
+
+        modelBuilder.Entity<Board>()
+            .HasOne(b => b.User)
+            .WithMany(u => u.OwnedBoards)
+            .HasPrincipalKey(u => u.Id)
+            .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
