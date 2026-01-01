@@ -121,6 +121,11 @@ public class ExceptionHandlingMiddleware
                 e.Message
                 ),
 
+            InvalidBoardTitleException e => (
+                HttpStatusCode.BadRequest,
+                ErrorCodes.InvalidBoardTitle,
+                e.Message
+            ),
 
             _ => (
                 HttpStatusCode.InternalServerError,
