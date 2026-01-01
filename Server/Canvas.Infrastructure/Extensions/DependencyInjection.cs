@@ -44,6 +44,8 @@ public static class DependencyInjection
 
         services.AddScoped<IEmailRepository, EmailRepository>();
 
+        services.AddScoped<IBoardRepository, BoardRepository>();
+
         // Services
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
