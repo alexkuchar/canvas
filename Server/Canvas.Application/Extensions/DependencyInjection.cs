@@ -1,4 +1,5 @@
 using Canvas.Application.Auth.Handlers;
+using Canvas.Application.Board.Handlers;
 using Canvas.Application.Options;
 using Canvas.Application.User.Handlers;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,14 @@ public static class DependencyInjection
 
         // User
         services.AddScoped<UpdateUserHandler>();
+
+        // Board
+        services.AddScoped<CreateBoardHandler>();
+        services.AddScoped<DeleteBoardHandler>();
+        services.AddScoped<GetBoardHandler>();
+        services.AddScoped<UpdateBoardHandler>();
+        services.AddScoped<GetBoardsHandler>();
+
         return services;
     }
 }
