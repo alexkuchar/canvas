@@ -32,4 +32,9 @@ public static class ErrorCodes
     public const string VerificationTokenUsed = "VERIFICATION_TOKEN_USED";
     public const string VerificationTokenTypeMismatch = "VERIFICATION_TOKEN_TYPE_MISMATCH";
     public const string VerificationEmailRateLimit = "VERIFICATION_EMAIL_RATE_LIMIT";
+
+    // Board
+    public const string InvalidBoardTitle = "INVALID_BOARD_TITLE";
+    public const string BoardNotFound = "BOARD_NOT_FOUND";
+    public const string BoardNotOwnedByUser = "BOARD_NOT_OWNED_BY_USER";
 }

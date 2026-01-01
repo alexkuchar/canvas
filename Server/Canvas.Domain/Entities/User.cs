@@ -24,7 +24,7 @@ public class User
 
     public ICollection<Session> Sessions { get; private set; } = new List<Session>();
     public ICollection<VerificationToken> VerificationTokens { get; private set; } = new List<VerificationToken>();
-
+    public ICollection<Board> OwnedBoards { get; private set; } = new List<Board>();
     private User() { }
 
     public User(
