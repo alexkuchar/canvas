@@ -5,6 +5,7 @@ using Canvas.Domain.Errors;
 
 using Canvas.Application.Exceptions;
 using Canvas.Application.Auth.Exceptions;
+using Canvas.Application.Board.Exceptions;
 
 namespace Canvas.Api.Middleware;
 
@@ -95,6 +96,16 @@ public class ExceptionHandlingMiddleware
             UserNotVerifiedException e => (
                 HttpStatusCode.BadRequest,
                 ErrorCodes.UserNotVerified,
+                e.Message
+            ),
+            BoardNotFoundException e => (
+                HttpStatusCode.NotFound,
+                ErrorCodes.BoardNotFound,
+                e.Message
+            ),
+            BoardNotOwnedByUserException e => (
+                HttpStatusCode.Forbidden,
+                ErrorCodes.BoardNotOwnedByUser,
                 e.Message
             ),
             VerificationEmailRateLimitException e => (
